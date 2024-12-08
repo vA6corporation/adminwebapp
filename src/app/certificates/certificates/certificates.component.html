@@ -1,0 +1,39 @@
+<section class="container">
+    <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let business of businesses" (opened)="onOpenPanel(business)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ business?.businessName | uppercase }}
+                    <span class="spacer"></span>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list role="list">
+                <mat-list-item role="listitem">
+                    Fecha de vencimiento
+                    <span class="spacer"></span>
+                    {{ business?.certificate.expirationAt | date: 'dd/MM/yyyy' }}
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    RUC
+                    <span class="spacer"></span>
+                    {{ business?.ruc }}
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    Contacto
+                    <span class="spacer"></span>
+                    <a [href]="'tel:' + business.mobileNumber" class="text-white">
+                        {{ business.formatContact }}
+                    </a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <button type="button" disabled="true" mat-raised-button color="primary" class="w-100"
+                        *ngIf="isLoading; else elseBlock">INGRESAR</button>
+                    <ng-template #elseBlock>
+                        <a [href]="'https://app.kramvi.com/login?email=' + user?.email + '&password=' + user?.password"
+                            target="_blank" mat-raised-button color="primary" class="w-100">INGRESAR</a>
+                    </ng-template>
+                </mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+    </mat-accordion>
+</section>

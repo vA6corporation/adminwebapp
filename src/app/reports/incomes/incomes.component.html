@@ -1,0 +1,31 @@
+<section class="container">
+    <mat-form-field appearance="fill">
+        <mat-label>Tipo de negocio</mat-label>
+        <mat-select [(value)]="businessType" (selectionChange)="onBusinessTypeChange()">
+            <mat-option value="">TODOS LOS TIPOS DE NEGOCIO</mat-option>
+            <mat-option value="TIENDA">TIENDA</mat-option>
+            <mat-option value="RESTAURANTE">RESTAURANTE</mat-option>
+            <mat-option value="HOTEL">HOTEL</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-action-list role="list">
+        <button mat-list-item (click)="onEditDialog(business)" *ngFor="let business of filterBusinesses" role="listitem">
+            {{ business.businessName | uppercase }}
+            <span class="spacer"></span>
+            <table>
+                <tbody>
+                    <tr>
+                        <td><mat-icon class="mr-2">credit_card</mat-icon></td>
+                        <td>{{ business.charge.toFixed(2) }}</td>
+                        <td width="10"></td>
+                        <td><mat-icon class="mr-2">store</mat-icon></td>
+                        <td>{{ business.offices.length }}</td>
+                        <td width="10"></td>
+                        <td><mat-icon class="mr-2">local_atm</mat-icon></td>
+                        <td width="100">{{ business.monthlyIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </button>
+    </mat-action-list>
+</section>

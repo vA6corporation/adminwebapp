@@ -1,0 +1,20 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="formGroup" autocomplete="off">
+    <h2 mat-dialog-title>Buscar empresa</h2>
+    <div mat-dialog-content>
+        <mat-form-field appearance="fill">
+            <mat-label>Busqueda</mat-label>
+            <input type="text" matInput formControlName="key">
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <mat-action-list>
+            <button mat-list-item *ngFor="let business of businesses" (click)="onSetBusiness(business)">
+                {{ business.businessName | uppercase }}
+            </button>
+        </mat-action-list>
+        <div class="my-3"></div>
+    </div>
+    <mat-dialog-actions>
+        <span class="spacer"></span>
+        <button type="button" mat-stroked-button mat-dialog-close color="primary">CANCELAR</button>
+    </mat-dialog-actions>
+</form>

@@ -1,0 +1,47 @@
+<section class="py-5">
+    <form class="container" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+        <div class="p-5"></div>
+        <h1>Por favor identifiquese</h1>
+        <div *ngIf="rememberUsers.length && newLogin === false; else elseBlock">
+            <mat-card>
+                <mat-action-list>
+                    <button type="button" mat-list-item *ngFor="let user of rememberUsers"
+                        (click)="onUserSelected(user)">
+                        {{ user.name }}
+                        <span class="spacer"></span>
+                        <div>
+                            {{ user.email }}
+                            <button mat-icon-button aria-label="trash" (click)="onDeleteUser(user._id, $event)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </button>
+                </mat-action-list>
+            </mat-card>
+            <div class="divider"></div>
+            <button type="submit" mat-raised-button color="primary" class="w-100" (click)="newLogin = true">USAR UNA
+                CUENTA DIFERENTE</button>
+            <div class="divider"></div>
+        </div>
+
+        <ng-template #elseBlock>
+            <mat-form-field>
+                <input type="email" matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+            <mat-form-field>
+                <input type="password" matInput placeholder="Contraseña" formControlName="password">
+            </mat-form-field>
+            <button type="submit" mat-raised-button color="primary" class="w-100"
+                [disabled]="isLoading">INGRESAR</button>
+            <div class="divider"></div>
+            <p class="text-center">
+                <mat-slide-toggle formControlName="rememberme">
+                    Recuerdame
+                </mat-slide-toggle>
+            </p>
+        </ng-template>
+        <p class="text-center text-muted" (click)="onDeploy()">
+            v{{ version }}
+        </p>
+    </form>
+</section>

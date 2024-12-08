@@ -1,0 +1,11 @@
+<section class="container">
+    <mat-form-field appearance="fill">
+        <mat-label>Año</mat-label>
+        <mat-select [(value)]="year" (selectionChange)="fetchData()">
+            <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div class="d-flex">
+        <canvas #billingChart height="300"></canvas>
+    </div>
+</section>

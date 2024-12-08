@@ -1,0 +1,33 @@
+<mat-nav-list class="pt-0">
+    <div class="nav-header p-2 text-white overflow-hidden">
+        <p class="text-capitalize text-bold mb-1">Administrador</p>
+        <span class="m-0 text-capitalize text-truncate">Kramvi facturacion electronica</span>
+    </div>
+    <a href="#" mat-list-item routerLink="/" (click)="onClose()">
+        <mat-icon class="mr-2">store</mat-icon>
+        <span>Empresas</span>
+    </a>
+    <a href="#" mat-list-item routerLink="/disabled" (click)="onClose()">
+        <mat-icon class="mr-2">store</mat-icon>
+        <span>Desactivados</span>
+    </a>
+    <a href="#" mat-list-item routerLink="/certificates" (click)="onClose()">
+        <mat-icon class="mr-2">check</mat-icon>
+        <span>Certificados</span>
+        <span class="spacer"></span>
+        <span>({{ businesses.length }})</span>
+    </a>
+    <a href="#" mat-list-item routerLink="/reports" (click)="onClose()">
+        <mat-icon class="mr-2">show_chart</mat-icon>
+        <span>Reportes</span>
+    </a>
+    <a href="#" mat-list-item routerLink="/workers" (click)="onClose()">
+        <mat-icon class="mr-2">people</mat-icon>
+        <span>Personal</span>
+    </a>
+    <mat-divider></mat-divider>
+    <a href="#" mat-list-item routerLink="/logout" (click)="onClose()">
+        <mat-icon class="mr-2">logout</mat-icon>
+        <span>Cerrar sesion</span>
+    </a>
+</mat-nav-list>

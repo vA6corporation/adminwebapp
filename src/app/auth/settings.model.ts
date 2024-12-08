@@ -1,0 +1,30 @@
+export class SettingsModel {
+  _id: string = '';
+  priceType: string = 'GLOBAL'
+  password: string|null = null
+  defaultPriceList: string|null = null
+  defaultVoucher: string = 'BOLETA'
+  defaultDelivery: string = 'ESTABLECIMIENTO'
+  defaultCurrencyCode: string = 'PEN'
+  defaultSearchCustomer: string = 'NOMBRES'
+  showChange: boolean = false
+  showCurrencyCode: boolean = false
+  showDeliveryType: boolean = false
+  showObservationItems: boolean = false
+  showSpecialty: boolean = false
+  showWorker: boolean = false
+  showTotalDiscount: boolean = false
+  showReferred: boolean = false
+  printOrder: boolean = true
+  allowCredit: boolean = false
+  allowFreePrice: boolean = false
+  allowFreeStock: boolean = false
+  showSubPrice: boolean = false
+  allowBonus: boolean = false
+  papelImpresion: string = 'ticket80mm'
+  marginLeft: number = 0
+  marginRight: number = 0
+  logo: string|null = null
+  showPrintZone: boolean = false
+  textSale: string = ''
+}

@@ -1,0 +1,46 @@
+.title
+  margin-left: 1rem
+
+.spinner
+  margin-right: 0
+  margin-left: 0
+  z-index: 101
+
+.container-spinner
+  top: 0
+  left: 0
+  position: absolute
+  width: 100vw
+  height: 100%
+  display: flex
+  align-items: center
+  justify-content: center
+  overflow: hidden
+
+.container-spinner:after
+  content: ''
+  width: 100vw
+  height: 100%
+  position: absolute
+  top: 0
+  left: 0
+  z-index: 100
+  background: white
+  opacity: 0.5
+  overflow: hidden
+
+mat-progress-bar
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  z-index: 10
+
+::ng-deep .mat-progress-bar-fill::after
+  background-color: #1E457C
+
+::ng-deep .mat-progress-bar-buffer
+  background: #E4E8EB
+
+::ng-deep .mat-progress-bar
+  border-radius: 2px

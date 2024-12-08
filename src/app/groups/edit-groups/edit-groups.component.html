@@ -1,0 +1,30 @@
+<mat-list class="mb-3" role="list">
+    <mat-list-item>
+        <h2>Empresas</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem" *ngFor="let business of businesses"
+        [ngClass]="{ 'text-muted': business.deletedAt }">{{ business.businessName | uppercase }}</mat-list-item>
+</mat-list>
+<div class="mb-3">
+    <mat-divider></mat-divider>
+</div>
+<mat-list role="list">
+    <mat-list-item>
+        <h2>Usuarios Franquisiados</h2>
+    </mat-list-item>
+    <mat-list-item role="listitem" *ngFor="let user of activeUsers">{{ user.name | uppercase }} - {{ user.email }}</mat-list-item>
+</mat-list>
+<form class="container" (ngSubmit)="onAddUser()" [formGroup]="formGroup">
+    <mat-form-field appearance="fill">
+        <mat-label>Usuarios</mat-label>
+        <mat-select formControlName="userId">
+            <mat-option *ngFor="let user of users" [value]="user._id">{{ user.name | uppercase }} - {{ user.email }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button type="submit" class="w-100" mat-raised-button color="primary">AGREGAR FRANQUISADO</button>
+</form>
+<div class="fixed-bottom p-3" style="right: 0; left: unset; width: auto;" (click)="onAddBusiness()">
+    <button mat-fab color="primary" class="float-right">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>
