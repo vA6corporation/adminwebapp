@@ -1,17 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NavigationService } from 'src/app/navigation/navigation.service';
 import { BusinessModel } from '../business.model';
 import { BusinessesService } from '../businesses.service';
+import { NavigationService } from '../../navigation/navigation.service';
+import { MaterialModule } from '../../material.module';
 
 @Component({
     selector: 'app-dialog-businesses',
+    imports: [MaterialModule, ReactiveFormsModule],
     templateUrl: './dialog-businesses.component.html',
-    styleUrls: ['./dialog-businesses.component.sass']
+    styleUrls: ['./dialog-businesses.component.sass'],
 })
-export class DialogBusinessesComponent implements OnInit {
+export class DialogBusinessesComponent {
 
     constructor(
         @Inject(MAT_DIALOG_DATA)

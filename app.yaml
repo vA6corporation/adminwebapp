@@ -1,0 +1,11 @@
+runtime: nodejs20
+
+handlers:
+- url: /(.*\..+)$ 
+  static_files: dist/adminwebapp/browser/\1
+  upload: dist/adminwebapp/browser/(.*\..+)$
+
+- url: /.*
+  secure: always
+  static_files: dist/adminwebapp/browser/index.html
+  upload: dist/adminwebapp/browser/index.html

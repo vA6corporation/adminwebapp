@@ -1,15 +1,17 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
 import { NavigationService } from '../navigation.service';
+import { AuthService } from '../../auth/auth.service';
+import { MaterialModule } from '../../material.module';
 
 @Component({
     selector: 'app-toolbar',
+    imports: [MaterialModule, ReactiveFormsModule],
     templateUrl: './toolbar.component.html',
-    styleUrls: ['./toolbar.component.sass']
+    styleUrls: ['./toolbar.component.sass'],
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
     constructor(
         private readonly router: Router,
@@ -53,7 +55,7 @@ export class ToolbarComponent implements OnInit {
             this.backTo = backTo
         })
 
-        this.authService.getAuthChange().subscribe(authState => {
+        this.authService.handleAuthChange().subscribe(authState => {
             this.isAuth = authState
         })
 
@@ -154,6 +156,14 @@ export class ToolbarComponent implements OnInit {
         }
         if (!this.showInputSearch) {
             this.showTitle = true
+        }
+    }
+
+    onCloseInputSearch() {
+        if (this.formGroup.value.key) {
+            this.formGroup.reset()
+        } else {
+            this.showInputSearch = false
         }
     }
 

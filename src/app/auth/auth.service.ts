@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { HttpService } from 'src/app/http.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { OfficeModel } from './office.model';
@@ -7,6 +6,7 @@ import { SettingsModel } from './settings.model';
 import { ModuleModel } from '../navigation/module.model';
 import { UserModel } from '../users/user.model';
 import { BusinessModel } from '../businesses/business.model';
+import { HttpService } from '../http.service';
 
 @Injectable({
     providedIn: 'root'
@@ -45,7 +45,7 @@ export class AuthService {
         return this.objectModules
     }
 
-    getAuthChange() {
+    handleAuthChange() {
         return this.authChange$.asObservable()
     }
 

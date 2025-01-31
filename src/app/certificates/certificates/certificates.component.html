@@ -5,6 +5,9 @@
                 <mat-panel-title>
                     {{ business?.businessName | uppercase }}
                     <span class="spacer"></span>
+                    @if (business.certificate) {
+                    {{ expirationAt(business.certificate.expirationAt) }}
+                    }
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-list role="list">

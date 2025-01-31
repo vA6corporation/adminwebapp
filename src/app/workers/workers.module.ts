@@ -10,16 +10,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    WorkersComponent,
-    CreateWorkersComponent,
-    EditWorkersComponent
-  ],
-  imports: [
-    CommonModule,
-    WorkersRoutingModule,
-    MaterialModule,
-    ReactiveFormsModule
-  ]
+    declarations: [
+        WorkersComponent,
+        CreateWorkersComponent,
+        EditWorkersComponent
+    ],
+    imports: [
+        CommonModule,
+        WorkersRoutingModule,
+        MaterialModule,
+        ReactiveFormsModule
+    ]
 })
 export class WorkersModule { }

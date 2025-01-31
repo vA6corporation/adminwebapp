@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpService } from '../http.service';
 import { BusinessModel } from './business.model';
 import { GroupModel } from './group.model';
+import { HttpService } from '../http.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +14,7 @@ export class BusinessesService {
         private readonly httpService: HttpService,
     ) { }
 
-    private certificateBusinesses: BehaviorSubject<BusinessModel[]>|null = null
+    private certificateBusinesses: BehaviorSubject<BusinessModel[]> | null = null
 
     handleCertificateBusinesses() {
         if (this.certificateBusinesses === null) {

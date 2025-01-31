@@ -1,18 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { BusinessModel } from 'src/app/businesses/business.model';
-import { BusinessesService } from 'src/app/businesses/businesses.service';
-import { NavigationService } from 'src/app/navigation/navigation.service';
-import { UserModel } from 'src/app/users/user.model';
-import { UsersService } from 'src/app/users/users.service';
+import { BusinessesService } from '../../businesses/businesses.service';
+import { NavigationService } from '../../navigation/navigation.service';
+import { UsersService } from '../../users/users.service';
+import { BusinessModel } from '../../businesses/business.model';
+import { UserModel } from '../../users/user.model';
 
 @Component({
     selector: 'app-certificates',
     templateUrl: './certificates.component.html',
-    styleUrls: ['./certificates.component.sass']
+    styleUrls: ['./certificates.component.sass'],
+    standalone: false
 })
-export class CertificatesComponent implements OnInit {
+export class CertificatesComponent {
 
     constructor(
         private readonly businessesService: BusinessesService,
@@ -37,6 +38,17 @@ export class CertificatesComponent implements OnInit {
         })
     }
 
+    expirationAt(expirationAt: string) {
+        const today = new Date()
+        const updateDate = new Date(expirationAt)
+        var diffMs = (updateDate.getTime() - today.getTime())
+        var diffDays = Math.floor(diffMs / 86400000) // days
+        if (diffDays > 0) {
+            return `${diffDays} dias`
+        }
+        return 'Ya vencio'
+    }
+
     onDisable(businessId: string) {
         const ok = confirm('Esta seguro de desactivar')
         if (ok) {
@@ -51,13 +63,15 @@ export class CertificatesComponent implements OnInit {
     onOpenPanel(business: BusinessModel) {
         this.business = business
         this.isLoading = true
-        this.usersService.getAdminUserByBusinessId(business._id).subscribe(user => {
-            this.user = user
-            this.isLoading = false
-        }, (error: HttpErrorResponse) => {
-            this.isLoading = false
-            this.navigationService.loadBarFinish()
-            this.navigationService.showMessage(error.error.message)
+        this.usersService.getAdminUserByBusinessId(business._id).subscribe({
+            next: user => {
+                this.user = user
+                this.isLoading = false
+            }, error: (error: HttpErrorResponse) => {
+                this.isLoading = false
+                this.navigationService.loadBarFinish()
+                this.navigationService.showMessage(error.error.message)
+            }
         })
     }
 

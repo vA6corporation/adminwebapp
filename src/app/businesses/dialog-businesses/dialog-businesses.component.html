@@ -1,11 +1,11 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="formGroup" autocomplete="off">
     <title mat-dialog-title>Editar empresa</title>
     <div mat-dialog-content>
-        <mat-form-field appearance="standard">
+        <mat-form-field>
             <mat-label>Pago mensual</mat-label>
             <input type="number" class="text-center" matInput formControlName="charge">
         </mat-form-field>
-        <mat-form-field appearance="standard">
+        <mat-form-field>
             <mat-label>Celular de contacto</mat-label>
             <input type="text" class="text-center" (input)="onInputMobile(mobile.value)" #mobile matInput
                 formControlName="mobileNumber">

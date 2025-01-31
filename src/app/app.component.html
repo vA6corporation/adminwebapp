@@ -3,9 +3,16 @@
         <app-sidenav-list (sidenavClose)="sidenav.close()"></app-sidenav-list>
     </mat-sidenav>
     <mat-sidenav-content>
+        <div class="d-flex align-items-center bg-warning">
+            <p class="mat-title-medium mb-0 ml-5 text-black">Tienes {{ businesses.length }} certificados por vencer</p>
+            <span class="divider"></span>
+            <button type="button" routerLink="/certificates" class="text-primary" mat-button>VER CERTIFICADOS</button>
+        </div>
         <app-toolbar (sidenavToggle)="sidenav.toggle()"></app-toolbar>
-        <main *ngIf="isStart">
-            <router-outlet></router-outlet>
-        </main>
+        @if (isStart) {
+            <main>
+                <router-outlet></router-outlet>
+            </main>
+        }
     </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,3 +1,3 @@
 export interface ActiveModuleModel {
-  [key: string]: boolean,
+    [key: string]: boolean,
 }

@@ -1,40 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { NavigationService } from 'src/app/navigation/navigation.service';
+import { NavigationService } from '../../navigation/navigation.service';
 
 @Component({
-  selector: 'app-reports',
-  templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.sass']
+    selector: 'app-reports',
+    templateUrl: './reports.component.html',
+    styleUrls: ['./reports.component.sass'],
+    standalone: false
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent {
 
-  constructor(
-    private readonly navigationService: NavigationService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) { }
+    constructor(
+        private readonly navigationService: NavigationService,
+        private readonly route: ActivatedRoute,
+        private readonly router: Router
+    ) { }
 
-  public selectedIndex: number = 0;
+    public selectedIndex: number = 0
 
-  ngOnInit(): void {
-    this.navigationService.setTitle('Reportes');
+    ngOnInit(): void {
+        this.navigationService.setTitle('Reportes')
 
-    this.route.queryParams.subscribe(params => {
-      const { tabIndex } = params;
-      this.selectedIndex = tabIndex;
-    });
-  }
+        this.route.queryParams.subscribe(params => {
+            const { tabIndex } = params
+            this.selectedIndex = tabIndex
+        })
+    }
 
-  onChangeSelected(tabIndex: number) {
+    onChangeSelected(tabIndex: number) {
 
-    const queryParams: Params = { tabIndex };
+        const queryParams: Params = { tabIndex }
 
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: queryParams, 
-      queryParamsHandling: 'merge', // remove to replace all query params by provided
-    });
-  }
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: queryParams,
+            queryParamsHandling: 'merge', // remove to replace all query params by provided
+        })
+    }
 
 }

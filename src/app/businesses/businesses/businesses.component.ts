@@ -1,33 +1,39 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
-import { NavigationService } from 'src/app/navigation/navigation.service';
-import { UserModel } from 'src/app/users/user.model';
-import { UsersService } from 'src/app/users/users.service';
-import { WorkerModel } from 'src/app/workers/worker.model';
-import { WorkersService } from 'src/app/workers/workers.service';
 import { BusinessModel } from '../business.model';
 import { BusinessesService } from '../businesses.service';
 import { DialogBusinessesComponent } from '../dialog-businesses/dialog-businesses.component';
 import { DialogObservationsComponent, DialogObservationsData } from '../dialog-observations/dialog-observations.component';
 import { DialogSummaryBadCdrsComponent } from '../dialog-summary-bad-cdrs/dialog-summary-bad-cdrs.component';
+import { MaterialModule } from '../../material.module';
+import { NavigationService } from '../../navigation/navigation.service';
+import { WorkersService } from '../../workers/workers.service';
+import { WorkerModel } from '../../workers/worker.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { UsersService } from '../../users/users.service';
+import { UserModel } from '../../users/user.model';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-businesses',
+    imports: [MaterialModule, ReactiveFormsModule, RouterModule, CommonModule],
     templateUrl: './businesses.component.html',
-    styleUrls: ['./businesses.component.sass']
+    styleUrls: ['./businesses.component.sass'],
 })
-export class BusinessesComponent implements OnInit {
+export class BusinessesComponent {
 
     constructor(
         private readonly businessesService: BusinessesService,
-        private readonly usersService: UsersService,
         private readonly navigationService: NavigationService,
         private readonly workersService: WorkersService,
+        private readonly usersService: UsersService,
+        private readonly authService: AuthService,
         private readonly formBuilder: FormBuilder,
         private readonly matDialog: MatDialog,
         readonly sanitizer: DomSanitizer
@@ -62,21 +68,27 @@ export class BusinessesComponent implements OnInit {
 
     private handleSearch$: Subscription = new Subscription()
     private handleWorkers$: Subscription = new Subscription()
+    private handleAuth$: Subscription = new Subscription()
 
     ngOnDestroy() {
         this.handleSearch$.unsubscribe()
         this.handleWorkers$.unsubscribe()
+        this.handleAuth$.unsubscribe()
     }
 
     ngOnInit(): void {
         this.navigationService.setTitle('Empresas')
 
-        this.businessesService.getSummaryBadCdrs().subscribe(summaryBadCdrs => {
-            if (summaryBadCdrs.length) {
-                this.matDialog.open(DialogSummaryBadCdrsComponent, {
-                    width: '600px',
-                    position: { top: '20px' },
-                    data: summaryBadCdrs,
+        this.handleAuth$ = this.authService.handleAuthChange().subscribe(isAuth => {
+            if (isAuth) {
+                this.businessesService.getSummaryBadCdrs().subscribe(summaryBadCdrs => {
+                    if (summaryBadCdrs.length) {
+                        this.matDialog.open(DialogSummaryBadCdrsComponent, {
+                            width: '600px',
+                            position: { top: '20px' },
+                            data: summaryBadCdrs,
+                        })
+                    }
                 })
             }
         })
@@ -146,17 +158,18 @@ export class BusinessesComponent implements OnInit {
     }
 
     onOpenPanel(business: BusinessModel) {
-        console.log(business)
         this.business = business
         this.formBusiness.patchValue(business)
         this.isLoading = true
-        this.usersService.getAdminUserByBusinessId(business._id).subscribe(user => {
-            this.user = user
-            this.isLoading = false
-        }, (error: HttpErrorResponse) => {
-            this.isLoading = false
-            this.navigationService.loadBarFinish()
-            this.navigationService.showMessage(error.error.message)
+        this.usersService.getAdminUserByBusinessId(business._id).subscribe({
+            next: user => {
+                this.user = user
+                this.isLoading = false
+            }, error: (error: HttpErrorResponse) => {
+                this.isLoading = false
+                this.navigationService.loadBarFinish()
+                this.navigationService.showMessage(error.error.message)
+            }
         })
     }
 
@@ -249,12 +262,14 @@ export class BusinessesComponent implements OnInit {
     }
 
     onMarketBusiness(businessId: string, isMarket: boolean) {
-        this.businessesService.marketBusiness(businessId, isMarket).subscribe(() => {
-            this.navigationService.loadBarFinish()
-            this.navigationService.showMessage('Se han guardado los cambios')
-        }, (error: HttpErrorResponse) => {
-            this.navigationService.loadBarFinish()
-            this.navigationService.showMessage(error.error.message)
+        this.businessesService.marketBusiness(businessId, isMarket).subscribe({
+            next: () => {
+                this.navigationService.loadBarFinish()
+                this.navigationService.showMessage('Se han guardado los cambios')
+            }, error: (error: HttpErrorResponse) => {
+                this.navigationService.loadBarFinish()
+                this.navigationService.showMessage(error.error.message)
+            }
         })
     }
 
@@ -277,26 +292,28 @@ export class BusinessesComponent implements OnInit {
 
     fetchData() {
         this.navigationService.loadBarStart()
-        this.businessesService.getActiveBusinesses().subscribe(businesses => {
-            this.navigationService.loadBarFinish()
-            if (this.isShowAll) {
-                this.businesses = businesses
-            } else {
-                this.businesses = businesses.slice(0, 20)
+        this.businessesService.getActiveBusinesses().subscribe({
+            next: businesses => {
+                this.navigationService.loadBarFinish()
+                if (this.isShowAll) {
+                    this.businesses = businesses
+                } else {
+                    this.businesses = businesses.slice(0, 20)
+                }
+                this.preBusinesses = businesses
+                this.businessesMarked = businesses.filter(e => e.isMarked).sort(function (a: any, b: any) {
+                    if (new Date(a.matkedAt).getTime() < new Date(b.markedAt).getTime()) {
+                        return 1
+                    }
+                    if (new Date(a.markedAt).getTime() > new Date(b.markedAt).getTime()) {
+                        return -1
+                    }
+                    return 0
+                })
+            }, error: (error: HttpErrorResponse) => {
+                this.navigationService.loadBarFinish()
+                this.navigationService.showMessage(error.error.message)
             }
-            this.preBusinesses = businesses
-            this.businessesMarked = businesses.filter(e => e.isMarked).sort(function (a: any, b: any) {
-                if (new Date(a.matkedAt).getTime() < new Date(b.markedAt).getTime()) {
-                    return 1
-                }
-                if (new Date(a.markedAt).getTime() > new Date(b.markedAt).getTime()) {
-                    return -1
-                }
-                return 0
-            })
-        }, (error: HttpErrorResponse) => {
-            this.navigationService.loadBarFinish()
-            this.navigationService.showMessage(error.error.message)
         })
     }
 

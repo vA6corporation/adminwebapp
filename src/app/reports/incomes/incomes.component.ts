@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BusinessModel } from 'src/app/businesses/business.model';
-import { BusinessesService } from 'src/app/businesses/businesses.service';
-import { DialogBusinessesComponent } from 'src/app/businesses/dialog-businesses/dialog-businesses.component';
-import { NavigationService } from 'src/app/navigation/navigation.service';
+import { BusinessesService } from '../../businesses/businesses.service';
+import { NavigationService } from '../../navigation/navigation.service';
+import { BusinessModel } from '../../businesses/business.model';
+import { DialogBusinessesComponent } from '../../businesses/dialog-businesses/dialog-businesses.component';
 
 @Component({
     selector: 'app-incomes',
     templateUrl: './incomes.component.html',
-    styleUrls: ['./incomes.component.sass']
+    styleUrls: ['./incomes.component.sass'],
+    standalone: false
 })
-export class IncomesComponent implements OnInit {
+export class IncomesComponent {
 
     constructor(
         private readonly businessesService: BusinessesService,

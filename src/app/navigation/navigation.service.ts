@@ -20,7 +20,6 @@ export class NavigationService {
     private handleSearch$: EventEmitter<string> = new EventEmitter()
     private handleInputSearch$: EventEmitter<string> = new EventEmitter()
     private loadBarState$ = new EventEmitter<boolean>()
-    private loadSpinnerState$ = new EventEmitter<boolean>()
     private changeTitle$ = new EventEmitter<string>()
     private isMainToolbar$ = new EventEmitter<boolean>()
     private backTo$ = new EventEmitter<string>()
@@ -78,18 +77,6 @@ export class NavigationService {
 
     getLoadBar() {
         return this.loadBarState$
-    }
-
-    loadSpinnerStart() {
-        this.loadSpinnerState$.emit(true)
-    }
-
-    loadSpinnerFinish() {
-        this.loadSpinnerState$.emit(false)
-    }
-
-    getLoadSpinner() {
-        return this.loadSpinnerState$
     }
 
     showMessage(message: string) {

@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { BusinessModel } from 'src/app/businesses/business.model';
-import { BusinessesService } from 'src/app/businesses/businesses.service';
-import { NavigationService } from 'src/app/navigation/navigation.service';
 import { DialogAddBusinessesComponent } from '../dialog-add-businesses/dialog-add-businesses.component';
-import { UserModel } from 'src/app/users/user.model';
-import { UsersService } from 'src/app/users/users.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GroupModel } from 'src/app/businesses/group.model';
+import { NavigationService } from '../../navigation/navigation.service';
+import { BusinessesService } from '../../businesses/businesses.service';
+import { UsersService } from '../../users/users.service';
+import { BusinessModel } from '../../businesses/business.model';
+import { UserModel } from '../../users/user.model';
+import { GroupModel } from '../../businesses/group.model';
 
 @Component({
     selector: 'app-edit-groups',
     templateUrl: './edit-groups.component.html',
-    styleUrls: ['./edit-groups.component.sass']
+    styleUrls: ['./edit-groups.component.sass'],
+    standalone: false
 })
-export class EditGroupsComponent implements OnInit {
+export class EditGroupsComponent {
 
     constructor(
         private readonly navigationService: NavigationService,
@@ -34,16 +35,13 @@ export class EditGroupsComponent implements OnInit {
     activeUsers: UserModel[] = []
     users: UserModel[] = []
     group: GroupModel | null = null
-    // userIds: string[] = []
 
     ngOnInit(): void {
         this.navigationService.setTitle('Editar grupo')
         this.navigationService.backTo()
 
-        this.activatedRoute.params.subscribe(params => {
-            this.groupId = params.groupId
-            this.fetchData()
-        })
+        this.groupId = this.activatedRoute.snapshot.params['groupId']
+        this.fetchData()
     }
 
     fetchData() { 

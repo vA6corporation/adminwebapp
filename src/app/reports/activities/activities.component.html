@@ -1,11 +1,11 @@
 <mat-action-list>
-  <button mat-list-item (click)="onDisable(element._id)" *ngFor="let element of summaries">
-    {{ element.businessName | uppercase }}
-    <span class="spacer"></span>
-    {{ element.createdAt | date: 'MM/yy' }}
-    <span class="divider"></span>
-    -
-    <span class="divider"></span>
-    {{ element.sales }}
-  </button>
+    <button mat-list-item (click)="onDisable(element._id)" *ngFor="let element of summaries">
+        {{ element.businessName | uppercase }}
+        <span class="spacer"></span>
+        {{ element.createdAt | date: 'MM/yy' }}
+        <span class="divider"></span>
+        -
+        <span class="divider"></span>
+        {{ element.sales }}
+    </button>
 </mat-action-list>

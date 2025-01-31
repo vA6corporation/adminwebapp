@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { BusinessModel } from 'src/app/businesses/business.model';
-import { BusinessesService } from 'src/app/businesses/businesses.service';
-import { NavigationService } from 'src/app/navigation/navigation.service';
+import { BusinessesService } from '../../businesses/businesses.service';
+import { NavigationService } from '../../navigation/navigation.service';
+import { BusinessModel } from '../../businesses/business.model';
 
 @Component({
     selector: 'app-dialog-add-businesses',
     templateUrl: './dialog-add-businesses.component.html',
-    styleUrls: ['./dialog-add-businesses.component.sass']
+    styleUrls: ['./dialog-add-businesses.component.sass'],
+    standalone: false
 })
-export class DialogAddBusinessesComponent implements OnInit {
+export class DialogAddBusinessesComponent {
 
     constructor(
         private readonly formBuilder: FormBuilder,
@@ -19,15 +20,11 @@ export class DialogAddBusinessesComponent implements OnInit {
         private readonly dialogRef: MatDialogRef<DialogAddBusinessesComponent>,
     ) { }
 
-    public formGroup: FormGroup = this.formBuilder.group({
+    formGroup: FormGroup = this.formBuilder.group({
         key: [null, Validators.required],
     })
-    public businesses: BusinessModel[] = []
-    public isLoading: boolean = false
-
-    ngOnInit(): void {
-
-    }
+    businesses: BusinessModel[] = []
+    isLoading: boolean = false
 
     onSetBusiness(business: BusinessModel) {
         this.dialogRef.close(business)
@@ -41,7 +38,6 @@ export class DialogAddBusinessesComponent implements OnInit {
                 this.navigationService.loadBarStart()
                 this.businessesService.getBusinessesByKey(key).subscribe(businesses => {
                     this.navigationService.loadBarFinish()
-                    console.log(businesses)
                     this.businesses = businesses
                 })
             }

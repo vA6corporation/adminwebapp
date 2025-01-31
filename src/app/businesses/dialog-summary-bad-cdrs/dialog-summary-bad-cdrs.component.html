@@ -1,16 +1,11 @@
 <title mat-dialog-title>Comprobantes observados</title>
 <mat-list role="list">
-  <mat-list-item role="listitem" *ngFor="let summaryBadCdr of summaryBadCdrs">
-    <div>
-      {{ summaryBadCdr.business.businessName | uppercase }}
-      <br>
-      <div class="pb-4">
-        <small>{{ summaryBadCdr.sunatMessage }}</small>
-      </div>
-    </div>
-  </mat-list-item>
+    <mat-list-item role="listitem" *ngFor="let summaryBadCdr of summaryBadCdrs">
+        <span matListItemTitle>{{ summaryBadCdr.business.businessName | uppercase }}</span>
+        <span>{{ summaryBadCdr.sunatMessage }}</span>
+    </mat-list-item>
 </mat-list>
 <mat-dialog-actions>
-  <span class="spacer"></span>
-  <button mat-raised-button mat-dialog-close color="primary">ACEPTAR</button>
+    <span class="spacer"></span>
+    <button mat-raised-button mat-dialog-close color="primary">ACEPTAR</button>
 </mat-dialog-actions>

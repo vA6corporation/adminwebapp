@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { BusinessModel } from 'src/app/businesses/business.model';
-import { BusinessesService } from 'src/app/businesses/businesses.service';
-import { NavigationService } from 'src/app/navigation/navigation.service';
+import { Component } from '@angular/core';
+import { BusinessesService } from '../../businesses/businesses.service';
+import { NavigationService } from '../../navigation/navigation.service';
+import { BusinessModel } from '../../businesses/business.model';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.sass']
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    styleUrls: ['./products.component.sass'],
+    standalone: false
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
 
-  constructor(
-    private readonly businessesService: BusinessesService,
-    private readonly navigationService: NavigationService,
-  ) { }
+    constructor(
+        private readonly businessesService: BusinessesService,
+        private readonly navigationService: NavigationService,
+    ) { }
 
-  public businesses: BusinessModel[] = [];
+    businesses: BusinessModel[] = []
 
-  ngOnInit(): void {
-    this.navigationService.loadBarStart();
-    this.businessesService.getInfoBusinesses().subscribe(businesses => {
-      this.navigationService.loadBarFinish();
-      this.businesses = businesses;
-    });
-  }
+    ngOnInit(): void {
+        this.navigationService.loadBarStart()
+        this.businessesService.getInfoBusinesses().subscribe(businesses => {
+            this.navigationService.loadBarFinish()
+            this.businesses = businesses
+        })
+    }
 }

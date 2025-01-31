@@ -18,14 +18,15 @@
             <span class="title">{{ title }}</span>
         }
         <span class="spacer"></span>
-        <form autocomplete="off" class="mr-2 d-inline" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
-            <mat-form-field floatLabel="never" *ngIf="isAuth && showSearch && showInputSearch">
-                <mat-label>Buscar</mat-label>
-                <input matInput type="text" formControlName="key" #inputKey (input)="onInput()">
-                <button type="button" mat-icon-button matSuffix (click)="showInputSearch = false; onToggleSearch()">
+        <form autocomplete="off" class="mr-2 d-inline search-input" (ngSubmit)="onSubmit()" [formGroup]="formGroup">
+            @if (isAuth && showSearch && showInputSearch) {
+            <mat-form-field appearance="outline">
+                <input #inputKey matInput type="text" placeholder="Buscar" formControlName="key" (input)="onInput()">
+                <button type="button" matSuffix mat-icon-button aria-label="close" (click)="onCloseInputSearch()">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
+            }
         </form>
         @if (isAuth && !showInputSearch && showSearch) {
             <button type="button" mat-icon-button aria-label="Mat menu"
