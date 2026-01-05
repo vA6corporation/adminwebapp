@@ -24,10 +24,10 @@ export class LogoutComponent {
 
     private user$: Subscription = new Subscription()
 
-    public offices: OfficeModel[] = []
-    public user: UserModel = new UserModel()
-    public business: BusinessModel = this.authService.getBusiness()
-    public businesses: BusinessModel[] = []
+    offices: OfficeModel[] = []
+    user: UserModel = new UserModel()
+    business: BusinessModel = this.authService.getBusiness()
+    businesses: BusinessModel[] = []
 
     ngOnDestroy() {
         this.user$.unsubscribe()

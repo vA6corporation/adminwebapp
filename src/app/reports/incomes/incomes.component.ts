@@ -19,9 +19,9 @@ export class IncomesComponent {
         private readonly matDialog: MatDialog,
     ) { }
 
-    public businesses: BusinessModel[] = []
-    public filterBusinesses: BusinessModel[] = []
-    public businessType: string = ''
+    businesses: BusinessModel[] = []
+    filterBusinesses: BusinessModel[] = []
+    businessType: string = ''
 
     onBusinessTypeChange() {
         if (this.businessType) {

@@ -6,6 +6,7 @@ export class UserModel {
   name: string = ''
   email: string = ''
   password: string = ''
+  hidePassword: string = ''
   isAdmin: boolean = false
   privileges: ActiveModuleModel = {}
   assignedOfficeId: string|null = null

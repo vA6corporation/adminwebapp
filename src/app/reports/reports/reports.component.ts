@@ -16,7 +16,7 @@ export class ReportsComponent {
         private readonly router: Router
     ) { }
 
-    public selectedIndex: number = 0
+    selectedIndex: number = 0
 
     ngOnInit(): void {
         this.navigationService.setTitle('Reportes')

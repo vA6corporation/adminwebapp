@@ -49,11 +49,11 @@ export class AuthService {
         return this.authChange$.asObservable()
     }
 
-    public getSettings(): SettingsModel {
+    getSettings(): SettingsModel {
         return this.settings
     }
 
-    public setAccessToken(accessToken: string | null): void {
+    setAccessToken(accessToken: string | null): void {
         this.httpService.accessToken = accessToken
         if (accessToken) {
             localStorage.setItem('accessToken', accessToken)
@@ -62,30 +62,30 @@ export class AuthService {
         }
     }
 
-    public login(email: string, password: string): Observable<any> {
+    login(email: string, password: string): Observable<any> {
         return this.httpService.post('auth/login', { email, password })
     }
 
-    public loggedIn(): void {
+    loggedIn(): void {
         this.authChange$.emit(true)
     }
 
-    public loggedOut(): void {
+    loggedOut(): void {
         this.authChange$.emit(false)
     }
 
 
-    public register(business: any, user: any): Observable<any> {
+    register(business: any, user: any): Observable<any> {
         return this.httpService.post('businesses', { business, user })
     }
 
-    public logout(): void {
+    logout(): void {
         this.setAccessToken(null)
         this.authChange$.emit(false)
         location.reload()
     }
 
-    public getSession(accessToken: string | null): Observable<any> {
+    getSession(accessToken: string | null): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
@@ -93,69 +93,69 @@ export class AuthService {
         return this.httpService.get('profile', { headers })
     }
 
-    public getActiveOffices(): Observable<OfficeModel[]> {
+    getActiveOffices(): Observable<OfficeModel[]> {
         return this.httpService.get('offices/activeOffices')
     }
 
-    public loadBusiness(businessId: string) {
+    loadBusiness(businessId: string) {
         return this.httpService.get(`businesses/byId/${businessId}`)
     }
 
-    public loadBusinessesByGroup(groupId: string) {
+    loadBusinessesByGroup(groupId: string) {
         return this.httpService.get(`businesses/byGroup/${groupId}`)
     }
 
-    public setOffices(offices: OfficeModel[]) {
+    setOffices(offices: OfficeModel[]) {
         this.offices = offices
     }
 
-    public getUser(): Observable<UserModel> {
+    getUser(): Observable<UserModel> {
         setTimeout(() => {
             this.user$.next(this.user)
         })
         return this.user$.asObservable()
     }
 
-    public getOffices(): OfficeModel[] {
+    getOffices(): OfficeModel[] {
         return this.offices
     }
 
-    public getObservableOffice(): Observable<OfficeModel> {
+    getObservableOffice(): Observable<OfficeModel> {
         return this.office$.asObservable()
     }
 
-    public getObservableBusiness(): Observable<BusinessModel> {
+    getObservableBusiness(): Observable<BusinessModel> {
         return this.business$.asObservable()
     }
 
-    public getOffice(): OfficeModel {
+    getOffice(): OfficeModel {
         return this.office
     }
 
-    public getBusiness(): BusinessModel {
+    getBusiness(): BusinessModel {
         return this.business
     }
 
-    public setOffice(office: OfficeModel) {
+    setOffice(office: OfficeModel) {
         return this.httpService.get(`auth/setOffice/${office._id}/${office.activityId}`)
     }
 
-    public setOfficeBusiness(business: BusinessModel, office: OfficeModel) {
+    setOfficeBusiness(business: BusinessModel, office: OfficeModel) {
         return this.httpService.get(`auth/setBusinessOffice/${business._id}/${office._id}/${office.activityId}`)
     }
 
-    public getActiveModules(): Observable<ModuleModel[]> {
+    getActiveModules(): Observable<ModuleModel[]> {
         setTimeout(() => {
             this.activeModules$.next(this.activeModules)
         })
         return this.activeModules$.asObservable()
     }
 
-    public getModules(): ModuleModel[] {
+    getModules(): ModuleModel[] {
         return this.modules
     }
 
-    public setUser(user: UserModel): void {
+    setUser(user: UserModel): void {
         this.user = user
         this.user$.next(this.user)
     }

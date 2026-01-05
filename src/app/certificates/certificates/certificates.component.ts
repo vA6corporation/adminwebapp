@@ -6,6 +6,7 @@ import { NavigationService } from '../../navigation/navigation.service';
 import { UsersService } from '../../users/users.service';
 import { BusinessModel } from '../../businesses/business.model';
 import { UserModel } from '../../users/user.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-certificates',
@@ -19,6 +20,7 @@ export class CertificatesComponent {
         private readonly businessesService: BusinessesService,
         private readonly navigationService: NavigationService,
         private readonly usersService: UsersService,
+        readonly sanitizer: DomSanitizer
     ) { }
 
     private handleCertificateBusinesses$ = new Subscription()

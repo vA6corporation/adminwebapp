@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ export class HttpService {
     ) { }
 
     private baseUrl: string = environment.baseUrl
-    public accessToken: string | null = null
+    accessToken: string | null = null
 
     get(url: string, options?: Options): Observable<any> {
         let headers = options?.headers

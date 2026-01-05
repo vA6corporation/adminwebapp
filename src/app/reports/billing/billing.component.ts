@@ -22,11 +22,11 @@ export class BillingComponent {
     @ViewChild('billingChart')
     private billingChart!: ElementRef<HTMLCanvasElement>
 
-    public chartBilling: Chart | null = null
-    public years: number[] = []
-    public year: number = new Date().getFullYear()
+    chartBilling: Chart | null = null
+    years: number[] = []
+    year: number = new Date().getFullYear()
 
-    public selectedIndex: number = 0
+    selectedIndex: number = 0
 
     ngOnInit(): void {
         this.navigationService.setTitle('Reportes')

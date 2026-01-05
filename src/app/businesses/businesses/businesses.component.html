@@ -2,152 +2,6 @@
     <div class="mb-3">
         <mat-accordion>
             @for (business of businessesMarked; track business._id) {
-                <mat-expansion-panel (opened)="onOpenPanel(business)" hideToggle>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{ business.businessName | uppercase }}
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <p *ngIf="business.observations" class="text-danger">{{ business.observations }}</p>
-                    <form [formGroup]="formBusiness" autocomplete="off">
-                        <mat-form-field class="example-full-width" appearance="fill">
-                            <mat-label>Fecha de pago</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="paymentAt"
-                                (dateChange)="onUpdateBusiness()">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker touchUi #picker></mat-datepicker>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Grupo de pago</mat-label>
-                            <mat-select formControlName="paymentGroup" (selectionChange)="onUpdateBusiness()">
-                                <mat-option value="01">01</mat-option>
-                                <mat-option value="10">10</mat-option>
-                                <mat-option value="20">20</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Asistente a cargo</mat-label>
-                            <mat-select formControlName="workerId" (selectionChange)="onUpdateBusiness()">
-                                <mat-option [value]="null">NINGUNO</mat-option>
-                                <mat-option *ngFor="let worker of workers" [value]="worker._id">{{ worker.name | uppercase
-                                    }}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <div class="d-flex py-2" style="font-size: 16px;">
-                            <mat-slide-toggle formControlName="isMarked" #marketToggle
-                                (change)="onUpdateMarket(business, marketToggle)">Resaltar</mat-slide-toggle>
-                            <span class="spacer"></span>
-                            <span>{{ business.markedAt | date: 'dd/MM/yy' }}</span>
-                        </div>
-                    </form>
-                    <mat-list role="list">
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                RUC
-                                <span class="spacer"></span>
-                                {{ business.ruc }}
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                Tarifa mensual
-                                <span class="spacer"></span>
-                                {{ (business.charge || 0).toFixed(2) }}
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                Recaudacion mensual
-                                <span class="spacer"></span>
-                                {{ business.monthlyIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                Tipo de negocio
-                                <span class="spacer"></span>
-                                {{ business.businessType }}
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                Contacto
-                                <span class="spacer"></span>
-                                <div class="d-flex align-items-center">
-                                    <a mat-icon-button
-                                        [href]="sanitizer.bypassSecurityTrustUrl('whatsapp://send?phone=+51' + business.mobileNumber)"
-                                        aria-label="Example icon button with a heart icon">
-                                        <mat-icon>chat</mat-icon>
-                                    </a>
-                                    <a [href]="'tel:' + business.mobileNumber" class="text-white">
-                                        {{ business.formatContact }}
-                                    </a>
-                                </div>
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                Usuario
-                                <span class="spacer"></span>
-                                {{ user?.email }}
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                Contraseña
-                                <span class="spacer"></span>
-                                {{ user?.password }}
-                            </div>
-                        </mat-list-item>
-                        <mat-list-item role="listitem" class="px-0">
-                            <div class="d-flex">
-                                ID
-                                <span class="spacer"></span>
-                                {{ business._id }}
-                            </div>
-                        </mat-list-item>
-                        @for (office of business.offices; track office._id) {
-                            <mat-list-item role="listitem" class="px-0">
-                                <span matListItemTitle>{{ office.tradeName | uppercase }}</span>
-                                <span>{{ office.address | uppercase }}</span>
-                            </mat-list-item>
-                        }
-                    </mat-list>
-                    <div class="d-flex">
-                        <span class="spacer"></span>
-                        <button mat-fab color="primary" (click)="onDisableBusiness(business._id)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                        <span class="divider"></span>
-                        <button mat-fab color="primary" [routerLink]="['/groups', business.groupId, 'edit']">
-                            <mat-icon>join_left</mat-icon>
-                        </button>
-                        <span class="divider"></span>
-                        <button mat-fab color="primary" (click)="onObservationsDialog(business)">
-                            <mat-icon>text_snippet</mat-icon>
-                        </button>
-                        <span class="divider"></span>
-                        <button mat-fab (click)="onEditDialog(business._id)" color="primary">
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <span class="divider"></span>
-                        <button mat-fab disabled="true" *ngIf="isLoading; else elseBlock">
-                            <mat-icon>login</mat-icon>
-                        </button>
-                        <ng-template #elseBlock>
-                            <a mat-fab
-                                [href]="'https://app.kramvi.com/login?email=' + user?.email + '&password=' + user?.password"
-                                target="_blank" color="primary">
-                                <mat-icon>login</mat-icon>
-                            </a>
-                        </ng-template>
-                    </div>
-                </mat-expansion-panel>
-            }
-        </mat-accordion>
-    </div>
-    <mat-accordion>
-        @for (business of businesses; track business._id) {
             <mat-expansion-panel (opened)="onOpenPanel(business)" hideToggle>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -205,7 +59,8 @@
                         <div class="d-flex">
                             Recaudacion mensual
                             <span class="spacer"></span>
-                            {{ business.monthlyIncome.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}
+                            {{ business.monthlyIncome.toLocaleString('en-US', { minimumFractionDigits: 0,
+                            maximumFractionDigits: 0 }) }}
                         </div>
                     </mat-list-item>
                     <mat-list-item role="listitem" class="px-0">
@@ -221,7 +76,7 @@
                             <span class="spacer"></span>
                             <div class="d-flex align-items-center">
                                 <a mat-icon-button
-                                    [href]="sanitizer.bypassSecurityTrustUrl('whatsapp://send?phone=+51' + business.mobileNumber)"
+                                    [href]="sanitizer.bypassSecurityTrustUrl('whatsapp://send?phone=+51' + business.mobileNumber + '&text=Buenas no se olvide de enviarme la capura de su pago')"
                                     aria-label="Example icon button with a heart icon">
                                     <mat-icon>chat</mat-icon>
                                 </a>
@@ -239,10 +94,14 @@
                         </div>
                     </mat-list-item>
                     <mat-list-item role="listitem" class="px-0">
-                        <div class="d-flex">
+                        <div class="d-flex align-items-center">
                             Contraseña
                             <span class="spacer"></span>
-                            {{ user?.password }}
+                            {{ user?.hidePassword }}
+                            <button mat-icon-button type="button" (click)="onClickCopy()"
+                                [cdkCopyToClipboard]="user?.password || ''">
+                                <mat-icon>content_copy</mat-icon>
+                            </button>
                         </div>
                     </mat-list-item>
                     <mat-list-item role="listitem" class="px-0">
@@ -253,10 +112,10 @@
                         </div>
                     </mat-list-item>
                     @for (office of business.offices; track office._id) {
-                        <mat-list-item role="listitem" class="px-0">
-                            <span matListItemTitle>{{ office.tradeName | uppercase }}</span>
-                            <span>{{ office.address | uppercase }}</span>
-                        </mat-list-item>
+                    <mat-list-item role="listitem" class="px-0">
+                        <span matListItemTitle>{{ office.tradeName | uppercase }}</span>
+                        <span>{{ office.address | uppercase }}</span>
+                    </mat-list-item>
                     }
                 </mat-list>
                 <div class="d-flex">
@@ -289,6 +148,157 @@
                     </ng-template>
                 </div>
             </mat-expansion-panel>
+            }
+        </mat-accordion>
+    </div>
+    <mat-accordion>
+        @for (business of businesses; track business._id) {
+        <mat-expansion-panel (opened)="onOpenPanel(business)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ business.businessName | uppercase }}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p *ngIf="business.observations" class="text-danger">{{ business.observations }}</p>
+            <form [formGroup]="formBusiness" autocomplete="off">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Fecha de pago</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="paymentAt"
+                        (dateChange)="onUpdateBusiness()">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Grupo de pago</mat-label>
+                    <mat-select formControlName="paymentGroup" (selectionChange)="onUpdateBusiness()">
+                        <mat-option value="01">01</mat-option>
+                        <mat-option value="10">10</mat-option>
+                        <mat-option value="20">20</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Asistente a cargo</mat-label>
+                    <mat-select formControlName="workerId" (selectionChange)="onUpdateBusiness()">
+                        <mat-option [value]="null">NINGUNO</mat-option>
+                        <mat-option *ngFor="let worker of workers" [value]="worker._id">{{ worker.name | uppercase
+                            }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="d-flex py-2" style="font-size: 16px;">
+                    <mat-slide-toggle formControlName="isMarked" #marketToggle
+                        (change)="onUpdateMarket(business, marketToggle)">Resaltar</mat-slide-toggle>
+                    <span class="spacer"></span>
+                    <span>{{ business.markedAt | date: 'dd/MM/yy' }}</span>
+                </div>
+            </form>
+            <mat-list role="list">
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        RUC
+                        <span class="spacer"></span>
+                        {{ business.ruc }}
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        Tarifa mensual
+                        <span class="spacer"></span>
+                        {{ (business.charge || 0).toFixed(2) }}
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        Recaudacion mensual
+                        <span class="spacer"></span>
+                        {{ business.monthlyIncome.toLocaleString('en-US', { minimumFractionDigits: 0,
+                        maximumFractionDigits: 0 }) }}
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        Tipo de negocio
+                        <span class="spacer"></span>
+                        {{ business.businessType }}
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        Contacto
+                        <span class="spacer"></span>
+                        <div class="d-flex align-items-center">
+                            <a mat-icon-button
+                                [href]="sanitizer.bypassSecurityTrustUrl('whatsapp://send?phone=+51' + business.mobileNumber + '&text=Buenas no se olvide de enviarme la capura de su pago')"
+                                aria-label="Example icon button with a heart icon">
+                                <mat-icon>chat</mat-icon>
+                            </a>
+                            <a [href]="'tel:' + business.mobileNumber" class="text-white">
+                                {{ business.formatContact }}
+                            </a>
+                        </div>
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        Usuario
+                        <span class="spacer"></span>
+                        {{ user?.email }}
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex align-items-center">
+                        Contraseña
+                        <span class="spacer"></span>
+                        {{ user?.hidePassword }}
+                        <button mat-icon-button type="button" (click)="onClickCopy()"
+                            [cdkCopyToClipboard]="user?.password || ''">
+                            <mat-icon>content_copy</mat-icon>
+                        </button>
+                    </div>
+                </mat-list-item>
+                <mat-list-item role="listitem" class="px-0">
+                    <div class="d-flex">
+                        ID
+                        <span class="spacer"></span>
+                        {{ business._id }}
+                    </div>
+                </mat-list-item>
+                @for (office of business.offices; track office._id) {
+                <mat-list-item role="listitem" class="px-0">
+                    <span matListItemTitle>{{ office.tradeName | uppercase }}</span>
+                    <span>{{ office.address | uppercase }}</span>
+                </mat-list-item>
+                }
+            </mat-list>
+            <div class="d-flex">
+                <span class="spacer"></span>
+                <button mat-fab color="primary" (click)="onDisableBusiness(business._id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                <span class="divider"></span>
+                <button mat-fab color="primary" [routerLink]="['/groups', business.groupId, 'edit']">
+                    <mat-icon>join_left</mat-icon>
+                </button>
+                <span class="divider"></span>
+                <button mat-fab color="primary" (click)="onObservationsDialog(business)">
+                    <mat-icon>text_snippet</mat-icon>
+                </button>
+                <span class="divider"></span>
+                <button mat-fab (click)="onEditDialog(business._id)" color="primary">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <span class="divider"></span>
+                <button mat-fab disabled="true" *ngIf="isLoading; else elseBlock">
+                    <mat-icon>login</mat-icon>
+                </button>
+                <ng-template #elseBlock>
+                    <a mat-fab
+                        [href]="'https://app.kramvi.com/login?email=' + user?.email + '&password=' + user?.password"
+                        target="_blank" color="primary">
+                        <mat-icon>login</mat-icon>
+                    </a>
+                </ng-template>
+            </div>
+        </mat-expansion-panel>
         }
     </mat-accordion>
     <div class="mt-3">

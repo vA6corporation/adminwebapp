@@ -140,6 +140,10 @@ export class BusinessesComponent {
         })
     }
 
+    onClickCopy() {
+        this.navigationService.showMessage('Copiado al portapapeles')
+    }
+
     onDisableBusiness(businessId: string) {
         const ok = confirm('Esta seguro de desactivar?...')
         if (ok) {

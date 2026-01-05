@@ -12,21 +12,27 @@
             </mat-expansion-panel-header>
             <mat-list role="list">
                 <mat-list-item role="listitem">
-                    Fecha de vencimiento
-                    <span class="spacer"></span>
-                    {{ business?.certificate.expirationAt | date: 'dd/MM/yyyy' }}
+                    <span matListItemTitle>Fecha de vencimiento</span>
+                    <span>{{ business?.certificate.expirationAt | date }}</span>
                 </mat-list-item>
                 <mat-list-item role="listitem">
-                    RUC
-                    <span class="spacer"></span>
-                    {{ business?.ruc }}
+                    <span matListItemTitle>RUC</span>
+                    <span>{{ business?.ruc }}</span>
                 </mat-list-item>
                 <mat-list-item role="listitem">
-                    Contacto
-                    <span class="spacer"></span>
-                    <a [href]="'tel:' + business.mobileNumber" class="text-white">
-                        {{ business.formatContact }}
-                    </a>
+                    <span matListItemMeta class="my-3">
+                        <a mat-icon-button
+                            [href]="sanitizer.bypassSecurityTrustUrl('whatsapp://send?phone=+51' + business.mobileNumber + '&text=Buenas es necesario renovar su Certificado Digital, voy a nesecitar su Usuario y Clave sol')"
+                            aria-label="Example icon button with a heart icon">
+                            <mat-icon>chat</mat-icon>
+                        </a>
+                    </span>
+                    <span matListItemTitle>Contacto</span>
+                    <span><a [href]="'tel:' + business.mobileNumber" class="text-white pb-3">{{ business.formatContact }}</a></span>
+                </mat-list-item>
+                <mat-list-item>
+                    <span matListItemTitle>Recaudacion mensual</span>
+                    <span>{{ business?.monthlyIncome?.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</span>
                 </mat-list-item>
                 <mat-list-item role="listitem">
                     <button type="button" disabled="true" mat-raised-button color="primary" class="w-100"
